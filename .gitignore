@@ -5,11 +5,17 @@ __pycache__/
 # PyTorch and Models
 *.pth
 *.pt
-best_model.pth
+models/
+
+# YOLO Runs
+runs/
 
 # Dataset
 Dataset/
 data/
+
+# Video Assets
+assets/*.mp4
 
 # Environments
 .env
