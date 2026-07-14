@@ -1,0 +1,23 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyTorch and Models
+*.pth
+*.pt
+best_model.pth
+
+# Dataset
+Dataset/
+data/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# OS generated files
+.DS_Store
+Thumbs.db

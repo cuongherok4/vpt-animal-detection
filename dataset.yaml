@@ -1,0 +1,16 @@
+path: D:/TÀI LIỆU NĂM 4/Module_dongvat/Dataset
+train: train
+val: test
+test: test
+nc: 10
+names:
+  - Bear
+  - Deer
+  - Duck
+  - Fox
+  - Parrot
+  - Rabbit
+  - Raccoon
+  - Red panda
+  - Squirrel
+  - Tiger
