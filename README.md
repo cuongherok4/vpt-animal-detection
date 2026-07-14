@@ -2,31 +2,34 @@
 
 ![Python](https://img.shields.io/badge/python-3.9+-blue.svg)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.5+-EE4C2C.svg)
+![YOLOv8](https://img.shields.io/badge/YOLOv8-Ultralytics-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 Dự án ứng dụng Deep Learning để phân loại và nhận diện 10 loài động vật khác nhau. 
-Mô hình sử dụng kiến trúc **MobileNetV3-Large** được fine-tune bằng PyTorch, tối ưu cho tốc độ và độ chính xác, hỗ trợ huấn luyện trên GPU (CUDA) và tích hợp giao diện người dùng (GUI) trực quan.
+Hệ thống hiện tại hỗ trợ và so sánh hiệu năng giữa các kiến trúc mạng: **MobileNetV3-Large**, **YOLOv8n-cls** (Nano), và **YOLOv8s-cls** (Small).
 
 ---
 
 ## ✨ Tính Năng Nổi Bật
 
 - **Phân loại 10 loài động vật**: Gấu, Nai, Vịt, Cáo, Vẹt, Thỏ, Gấu mèo, Gấu trúc đỏ, Sóc, Hổ.
-- **Mô hình siêu nhẹ & nhanh**: Sử dụng MobileNetV3-Large cho độ chính xác cao nhưng vẫn đảm bảo tốc độ suy luận nhanh (phù hợp chạy trên CPU lẫn GPU).
-- **Giao diện trực quan (GUI)**: Ứng dụng Desktop cho phép người dùng chọn ảnh và nhận kết quả dự đoán (kèm độ tin cậy) tức thì.
-- **Tự động hóa**: Cung cấp các script chia dữ liệu chuẩn xác, huấn luyện mô hình (tự động lưu best model) và đánh giá độ chính xác (Vẽ biểu đồ Loss/Accuracy).
+- **Hỗ trợ đa mô hình**: 
+  - **MobileNetV3-Large**: Fine-tune bằng PyTorch thuần, nhẹ và tối ưu CPU/GPU.
+  - **YOLOv8-cls**: Tích hợp bộ thư viện siêu mạnh của Ultralytics (bản Nano và Small) cho bài toán classification.
+- **So sánh & Đánh giá (Benchmark)**: Cung cấp script tự động huấn luyện, validate, tính toán Top-1/Top-5 Accuracy và đo tốc độ inference (ms) để chọn ra mô hình tốt nhất.
+- **Giao diện trực quan (GUI)**: Ứng dụng Desktop cho phép chọn ảnh và nhận kết quả dự đoán kèm độ tin cậy tức thì.
+- **Tự động hóa dữ liệu**: Script tự động chia tập dữ liệu `train/test` (tỉ lệ 80/20).
 
 ---
 
 ## 🛠️ Công Nghệ Sử Dụng
 
 - **Ngôn ngữ**: Python 3.9+
-- **Deep Learning Framework**: PyTorch, Torchvision
+- **Deep Learning Framework**: PyTorch, Torchvision, Ultralytics (YOLOv8)
 - **Xử lý ảnh**: Pillow (PIL)
-- **Trực quan hóa dữ liệu**: Matplotlib
-- **Khác**: Tqdm (hiển thị tiến trình)
+- **Khác**: Tqdm, Matplotlib
 
-> **Lưu ý**: Dự án không sử dụng OpenCV để tránh xung đột với NumPy 2.x, đảm bảo sự ổn định khi triển khai.
+> **Lưu ý**: GUI của dự án sử dụng Pillow để xử lý ảnh, tránh xung đột OpenCV khi triển khai. YOLO được dùng riêng cho việc so sánh và đánh giá cấu trúc.
 
 ---
 
@@ -35,20 +38,21 @@ Mô hình sử dụng kiến trúc **MobileNetV3-Large** được fine-tune bằ
 ```text
 vpt-animal-detection/
 │
-├── Dataset/                   ← Chứa dữ liệu (được sinh ra qua script chia dữ liệu)
-│   ├── train/                 ← 80% dữ liệu huấn luyện
-│   └── test/                  ← 20% dữ liệu kiểm thử
+├── Dataset/                   ← Dữ liệu (sinh ra qua script chia tập)
+├── runs/                      ← Thư mục lưu kết quả training YOLO tự động
 │
 ├── app_gui.py                 ← Ứng dụng Desktop (Giao diện người dùng)
-├── compare_models.py          ← Script so sánh các mô hình (nếu có)
 ├── model.py                   ← Định nghĩa kiến trúc MobileNetV3-Large
-├── predict.py                 ← Script suy luận qua Command Line
-├── split_dataset.py           ← Script tự động chia tập Train/Test
-├── train.py                   ← Script huấn luyện mô hình (Train & Eval)
+├── predict.py                 ← Script suy luận cho MobileNetV3 qua CLI
+├── split_dataset.py           ← Script chia tập Train/Test (80/20)
+├── train.py                   ← Huấn luyện MobileNetV3
+├── train_yolo.py              ← Huấn luyện & benchmark YOLOv8n-cls và YOLOv8s-cls
+├── compare_models.py          ← Script so sánh các mô hình
 │
-├── best_model.pth             ← Trọng số của mô hình tốt nhất (Tạo ra sau khi Train)
+├── best_model.pth             ← Trọng số MobileNetV3 tốt nhất sau khi train
+├── yolov8n-cls.pt             ← Trọng số pretrained YOLOv8 Nano
+├── yolov8s-cls.pt             ← Trọng số pretrained YOLOv8 Small
 ├── classes.txt                ← Danh sách 10 nhãn phân loại
-├── training_curves.png        ← Biểu đồ quá trình học (Tạo ra sau khi Train)
 └── README.md                  ← Tài liệu dự án
 ```
 
@@ -58,48 +62,44 @@ vpt-animal-detection/
 
 ### 1. Yêu cầu hệ thống
 - Python 3.9 trở lên.
-- Cài đặt các thư viện cần thiết:
+- Cài đặt thư viện:
 ```bash
-pip install torch torchvision pillow matplotlib tqdm
+pip install torch torchvision ultralytics pillow matplotlib tqdm
 ```
 
 ### 2. Chuẩn bị dữ liệu
-Nếu bạn có tập dữ liệu gốc, hãy chạy script sau để tự động chia dữ liệu thành 2 tập `train` (80%) và `test` (20%):
+Chạy script sau để tự động chia dữ liệu thành 2 tập `train` (80%) và `test` (20%):
 ```bash
 python split_dataset.py
 ```
 
-### 3. Huấn luyện mô hình (Training)
-Quá trình huấn luyện tự động tải pre-trained weights và fine-tune.
+### 3. Huấn luyện và So sánh (Training & Benchmark)
+
+**Huấn luyện MobileNetV3:**
 ```bash
 python train.py
 ```
-> **Kết quả đầu ra**: Mô hình tốt nhất sẽ được lưu tại `best_model.pth`. Biểu đồ huấn luyện lưu tại `training_curves.png`.
 
-### 4. Sử dụng mô hình (Inference)
-**Cách 1: Qua dòng lệnh (CLI)**
+**Huấn luyện YOLOv8 (Nano & Small) và xem bảng so sánh Benchmark:**
 ```bash
-python predict.py "đường_dẫn_đến_ảnh.jpg"
+python train_yolo.py
 ```
 
-**Cách 2: Qua giao diện đồ họa (GUI)**
+### 4. Sử dụng mô hình (Inference)
+Chạy ứng dụng giao diện (GUI) để kiểm thử mô hình bằng trực quan:
 ```bash
 python app_gui.py
 ```
-Nhấn **"Chọn hình ảnh từ máy tính"**, hình ảnh và kết quả dự đoán sẽ hiện ra trực quan trên màn hình.
 
 ---
 
 ## 🎥 Video Demo & Kết Quả Đạt Được
 
-**Video Demo quá trình nhận diện:**
+**🔗 [▶️ Nhấn vào đây để xem Video Demo (Trực tiếp)](https://github.com/cuongherok4/vpt-animal-detection/raw/main/demo_mibilev3.mp4)**
 
-<video width="100%" controls>
-  <source src="https://github.com/cuongherok4/vpt-animal-detection/raw/main/demo_mibilev3.mp4" type="video/mp4">
-  Trình duyệt của bạn không hỗ trợ thẻ video.
-</video>
+*(Mẹo: Khi bạn nhấn vào link, nếu trình duyệt không tự phát thì nó sẽ tải video mp4 về máy)*
 
-Mô hình đạt độ chính xác cao trên tập dữ liệu kiểm thử. Với cấu trúc MobileNetV3-Large kết hợp các kỹ thuật Transfer Learning và Data Augmentation (Random Crop, Flip, ColorJitter), mô hình có khả năng chống overfitting tốt.
+Mô hình đạt độ chính xác cao trên tập dữ liệu kiểm thử. Với sự so sánh giữa **MobileNetV3** và **YOLOv8-cls**, hệ thống đưa ra cái nhìn tổng quan nhất về sự đánh đổi giữa *tốc độ suy luận (Inference Speed)* và *độ chính xác (Top-1/Top-5 Acc)*.
 
 ---
 
