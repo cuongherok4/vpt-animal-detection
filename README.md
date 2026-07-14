@@ -95,9 +95,9 @@ python app_gui.py
 
 ## 🎥 Video Demo & Kết Quả Đạt Được
 
-**🔗 [▶️ Nhấn vào đây để xem Video Demo (Trực tiếp)](https://github.com/cuongherok4/vpt-animal-detection/raw/main/demo_mibilev3.mp4)**
+[![Video Demo](https://img.youtube.com/vi/WUf8zkJZ4io/0.jpg)](https://www.youtube.com/watch?v=WUf8zkJZ4io)
 
-*(Mẹo: Khi bạn nhấn vào link, nếu trình duyệt không tự phát thì nó sẽ tải video mp4 về máy)*
+*(Nhấn vào hình ảnh trên để xem video demo trực tiếp trên YouTube)*
 
 Mô hình đạt độ chính xác cao trên tập dữ liệu kiểm thử. Với sự so sánh giữa **MobileNetV3** và **YOLOv8-cls**, hệ thống đưa ra cái nhìn tổng quan nhất về sự đánh đổi giữa *tốc độ suy luận (Inference Speed)* và *độ chính xác (Top-1/Top-5 Acc)*.
 
